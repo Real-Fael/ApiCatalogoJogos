@@ -1,0 +1,48 @@
+﻿@page
+@model PrimeiroAppWebConsumindoAPI.Pages.AlterarJogoModel
+@{
+    ViewData["Title"] = "Alterar";
+}
+
+
+
+@{
+
+    string id = Request.Query["id"];
+
+    <form>
+        <div class="form-row">
+            <div class="col-7">
+                <input type="text" class="form-control" placeholder="Nome">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Produtora">
+            </div>
+            <div class="col">
+                <input type="number" class="form-control" placeholder="Preço">
+            </div>
+        </div>
+        <div class="col-auto my-1">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+
+    </form>
+
+    Service.DataService dataService = new Service.DataService();
+
+    System.Net.Http.HttpResponseMessage resposta = dataService.DeletaProdutoAsync(id).Result;
+
+    if (resposta.StatusCode == System.Net.HttpStatusCode.OK)
+    {
+        <div class="alert alert-success" role="alert">
+            Deletado com Sucesso
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Ops!!! algo deu errado. @resposta.StatusCode
+        </div>
+    }
+
+}

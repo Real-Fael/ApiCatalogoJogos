@@ -1,0 +1,59 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Meus Jogos";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Game Page</h1>
+    @{
+
+        var pag = Request.Query["pagina"];
+        <p>@pag</p>
+        var quant = Request.Query["quantidade"];
+        <p>@quant</p>
+
+        Service.DataService dataService = new Service.DataService();
+
+        var gameList = dataService.GetProdutosAsync().Result;//result retorna o resultado da task
+        int x = 0;
+        while (x < gameList.Count)
+        {
+            <div class="card-deck mb-2">
+
+                @{
+                    int y = 0;
+                    while (y < 3 && (x < gameList.Count))
+                    {
+                        <div id="@gameList[x].Id" class="card" style="max-width: 336px;">
+                            <img class="card-img-top" src="@Html.Raw($"http://source.unsplash.com/random/200x200?r={x}")" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">@gameList[x].Nome</h5>
+                                <p class="card-text">Jogo desenvolvido pela @gameList[x].Produtora.</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-success">R$ @($"{gameList[x].Preco:.00}") </li>
+                            </ul>
+                            <div class="card-body">
+                                <a href="/AlterarJogo?id=@gameList[x].Id" class="btn btn-outline-secondary">Alterar</a>
+                                <a href="/delete?id=@gameList[x].Id" class="btn btn-danger">&#x1F5D1</a>
+
+
+
+                            </div>
+                        </div>
+
+
+                        x++;
+                        y++;
+                    }
+
+                }
+
+            </div>
+
+
+        }
+    }
+</div>

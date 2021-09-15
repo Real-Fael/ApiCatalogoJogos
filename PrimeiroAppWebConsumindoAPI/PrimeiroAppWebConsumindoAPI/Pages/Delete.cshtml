@@ -1,0 +1,29 @@
+﻿@page
+@model PrimeiroAppWebConsumindoAPI.Pages.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+@{
+
+    string id = Request.Query["id"];
+    
+    Service.DataService dataService = new Service.DataService();
+
+    System.Net.Http.HttpResponseMessage resposta = dataService.DeletaProdutoAsync(id).Result;
+
+    if (resposta.StatusCode == System.Net.HttpStatusCode.OK)
+    {
+        <div class="alert alert-success" role="alert">
+            Deletado com Sucesso
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+           Ops!!! algo deu errado. @resposta.StatusCode
+        </div>
+    }
+
+}
