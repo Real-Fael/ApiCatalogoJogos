@@ -11,7 +11,7 @@
     
     Service.DataService dataService = new Service.DataService();
 
-    System.Net.Http.HttpResponseMessage resposta = dataService.DeletaProdutoAsync(id).Result;
+    System.Net.Http.HttpResponseMessage resposta = dataService.DeletaJogoAsync(id).Result;
 
     if (resposta.StatusCode == System.Net.HttpStatusCode.OK)
     {

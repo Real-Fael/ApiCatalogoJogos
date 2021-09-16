@@ -6,17 +6,24 @@
 
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Game Page</h1>
-    @{
+    <h1 class="display-4">Bem vindo a Game Page</h1>
+    @{    
+        int pag, quant;
 
-        var pag = Request.Query["pagina"];
-        <p>@pag</p>
-        var quant = Request.Query["quantidade"];
-        <p>@quant</p>
+        if (Request.Query.ContainsKey("pagina") && Int32.Parse(Request.Query["pagina"].ToString()) > 0)
+            pag =Int32.Parse( Request.Query["pagina"].ToString());
+        else
+            pag = 1;
 
+        if (Request.Query.ContainsKey("quantidade") && Int32.Parse(Request.Query["quantidade"].ToString()) > 0)
+            quant = Int32.Parse(Request.Query["quantidade"].ToString());
+        else
+            quant = 5;
+
+        
         Service.DataService dataService = new Service.DataService();
 
-        var gameList = dataService.GetProdutosAsync().Result;//result retorna o resultado da task
+        var gameList = dataService.GetJogosAsync(pag).Result;//result retorna o resultado da task
         int x = 0;
         while (x < gameList.Count)
         {
@@ -27,7 +34,7 @@
                     while (y < 3 && (x < gameList.Count))
                     {
                         <div id="@gameList[x].Id" class="card" style="max-width: 336px;">
-                            <img class="card-img-top" src="@Html.Raw($"http://source.unsplash.com/random/200x200?r={x}")" alt="Card image cap">
+                            <img class="card-img-top" src="@Html.Raw($"http://source.unsplash.com/random/200x200?r={x}")" alt="imagem meramente ilustrativa">
                             <div class="card-body">
                                 <h5 class="card-title">@gameList[x].Nome</h5>
                                 <p class="card-text">Jogo desenvolvido pela @gameList[x].Produtora.</p>
@@ -55,5 +62,19 @@
 
 
         }
+        
+        <nav aria-label="Navegação de página exemplo">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="?pagina=@(pag -1)" tabindex="-1">Anterior</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="?pagina=@(pag -1)">@(pag -1)</a></li>
+                <li class="page-item"><a class="page-link" href="?pagina=@pag">@pag</a></li>
+                <li class="page-item"><a class="page-link" href="?pagina=@(pag +1)">@(pag +1)</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="?pagina=@(pag +1)">Próximo</a>
+                </li>
+            </ul>
+        </nav>
     }
 </div>

@@ -1,5 +1,7 @@
 ﻿@page
-@model PrimeiroAppWebConsumindoAPI.Pages.AlterarJogoModel
+@model PrimeiroAppWebConsumindoAPI.Models.Jogo
+
+
 @{
     ViewData["Title"] = "Alterar";
 }
@@ -8,41 +10,34 @@
 
 @{
 
+    
+
+    Service.DataService dataService = new Service.DataService();
     string id = Request.Query["id"];
 
-    <form>
+    var game = dataService.GetJogo(id).Result;//result retorna o resultado da task
+    //game.Nome = "aaaaaaaa";
+    //dataService.UpdateJogoAsync(game);
+
+    <form asp-action="Create">
         <div class="form-row">
-            <div class="col-7">
-                <input type="text" class="form-control" placeholder="Nome">
+            <div class="col-0">
+                <input asp-for="Id" type="hidden" class="form-control"  value="@id" required>
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Produtora">
+                <input asp-for="Nome" type="text" class="form-control" placeholder="Nome" value="@game.Nome" required>
             </div>
             <div class="col">
-                <input type="number" class="form-control" placeholder="Preço">
+                <input asp-for="Produtora" type="text" class="form-control" placeholder="Produtora" value="@game.Produtora" required>
+            </div>
+            <div class="col">
+                <input asp-for="Preco" type="number" class="form-control" placeholder="Preço" value="@game.Preco" required>
             </div>
         </div>
         <div class="col-auto my-1">
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" value="Create" class="btn btn-primary">Enviar</button>
         </div>
-
     </form>
 
-    Service.DataService dataService = new Service.DataService();
-
-    System.Net.Http.HttpResponseMessage resposta = dataService.DeletaProdutoAsync(id).Result;
-
-    if (resposta.StatusCode == System.Net.HttpStatusCode.OK)
-    {
-        <div class="alert alert-success" role="alert">
-            Deletado com Sucesso
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            Ops!!! algo deu errado. @resposta.StatusCode
-        </div>
-    }
-
-}
+       
+        }

@@ -15,7 +15,7 @@ namespace PrimeiroAppWebConsumindoAPI.Service
     public class DataService
     {
         HttpClient client = new HttpClient();
-        public async Task<List<Jogo>> GetProdutosAsync( int pagina = 1, int quantidade = 5)
+        public async Task<List<Jogo>> GetJogosAsync( int pagina = 1, int quantidade = 5)
         {
             try
             {
@@ -29,7 +29,23 @@ namespace PrimeiroAppWebConsumindoAPI.Service
                 throw ex;
             }
         }
-        public async Task AddProdutoAsync(Jogo jogo)
+
+        public async Task<Jogo> GetJogo(string id)
+        {
+            try
+            {
+                string url = string.Format("https://localhost:44354/api/v1/Jogos/{0}",id);
+                var response = await client.GetStringAsync(url);
+                Jogo jogo = JsonConvert.DeserializeObject<Jogo>(response);
+                return jogo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task AddJogoAsync(Jogo jogo)
         {
             try
             {
@@ -50,7 +66,7 @@ namespace PrimeiroAppWebConsumindoAPI.Service
                 throw ex;
             }
         }
-        public async Task UpdateProdutoAsync(Jogo jogo)
+        public async Task UpdateJogoAsync(Jogo jogo)
         {
             string url = "https://localhost:44354/api/v1/Jogos/{0}";
             var uri = new Uri(string.Format(url, jogo.Id));
@@ -64,7 +80,7 @@ namespace PrimeiroAppWebConsumindoAPI.Service
                 throw new Exception("Erro ao atualizar produto");
             }
         }
-        public async Task<HttpResponseMessage> DeletaProdutoAsync(string id)
+        public async Task<HttpResponseMessage> DeletaJogoAsync(string id)
         {
             string url = "https://localhost:44354/api/v1/Jogos/{0}";
             var uri = new Uri(string.Format(url, id));
